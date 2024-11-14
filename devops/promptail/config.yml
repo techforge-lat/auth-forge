@@ -1,0 +1,25 @@
+server:
+    http_listen_port: 9080
+    grpc_listen_port: 0
+
+positions:
+    filename: /tmp/positions.yaml
+
+clients:
+    - url: http://loki:3100/loki/api/v1/push
+
+# Habilitar el endpoint HTTP de push
+push_config:
+    server:
+        http_listen_port: 9080
+        grpc_listen_port: 0
+
+scrape_configs:
+    - job_name: push-api
+      loki_push_api:
+          server:
+              http_listen_port: 9080
+              grpc_listen_port: 0
+          labels:
+              job: pushapi
+

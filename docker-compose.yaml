@@ -1,0 +1,65 @@
+services:
+    database:
+        image: postgres:latest
+        container_name: cloud_crm_database
+        restart: always
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: cloud_crm
+            POSTGRES_PASSWORD: secret
+        volumes:
+            - database_volume:/var/lib/postgresql/data
+            - ./database/seed/create_cloud_crm_database.sql:/docker-entrypoint-initdb.d/create_cloud_crm_database.sql
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: cloud_crm_pgadmin
+        restart: always
+        ports:
+            - "8888:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            PGADMIN_DEFAULT_PASSWORD: secret
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+    collector:
+        image: otel/opentelemetry-collector-contrib:0.81.0
+        container_name: cloud_crm_collector
+        restart: always
+        command: ["--config=/etc/collector.yaml"]
+        ports:
+            - "4318:4318"
+            - "4317:4317"
+        volumes:
+            - ./devops/otel/otel-collector-config.yml:/etc/collector.yaml
+        depends_on:
+            - tempo
+    tempo:
+        image: grafana/tempo:latest
+        container_name: cloud_crm_tempo
+        restart: always
+        command: ["-config.file=/etc/tempo.yaml"]
+        volumes:
+            - ./devops/tempo/tempo.yaml:/etc/tempo.yaml
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: cloud_crm_grafana
+        restart: always
+        environment:
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+            - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./devops/grafana/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+        depends_on:
+            - collector
+            - tempo
+volumes:
+    database_volume:
+        driver: local
+    cache_cluster_volume:
+        driver: local
+    pgadmin_data:
+        driver: local
