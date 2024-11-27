@@ -5,3 +5,9 @@ const (
 	Logger      = "logger"
 	Database    = "database"
 )
+
+const (
+	TenantHandler    = "tenant.handler"
+	TenantUseCase    = "tenant.usecase"
+	TenantRepository = "tenant.repository"
+)

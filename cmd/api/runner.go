@@ -17,7 +17,10 @@ func Run() {
 		return
 	}
 
-	router.SetAPIRoutes(server)
+	if err := router.SetAPIRoutes(server); err != nil {
+		logger.Error(context.Background(), "failed to register routes", "error", err.Error())
+		return
+	}
 
 	if err := server.Start(); err != nil {
 		logger.Error(context.Background(), err.Error())

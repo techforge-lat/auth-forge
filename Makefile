@@ -89,3 +89,7 @@ run:
 	mkdir -p bin
 	go build -o ./bin/api ./cmd/api
 	ENV=local CONFIGURATION_FILEPATH=$(PWD)/cmd/api/.env ./bin/api
+
+wizard:
+	go build -o ./bin/wizard ./cmd/wizard
+	./bin/wizard -config=./cmd/wizard/module-config.json

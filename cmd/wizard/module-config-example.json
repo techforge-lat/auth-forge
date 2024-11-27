@@ -1,0 +1,32 @@
+{
+	"module_name": "Supplier",
+	"database_name": "crm",
+	"package_path": "cloud-crm-backend",
+	"fields": [
+		{
+			"name": "Name",
+			"type": "string",
+			"is_nullable": false
+		},
+		{
+			"name": "Description",
+			"type": "string",
+			"is_nullable": true
+		},
+		{
+			"name": "Price",
+			"type": "float64",
+			"is_nullable": false
+		},
+		{
+			"name": "StockQuantity",
+			"type": "uint",
+			"is_nullable": false
+		},
+		{
+			"name": "CategoryID",
+			"type": "uuid.UUID",
+			"is_nullable": true
+		}
+	]
+}
