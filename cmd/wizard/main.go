@@ -202,7 +202,7 @@ func %sRoutes(server *server.Server) error {
 	group.GET("/all", handler.FindAll)
 
 	return nil
-}`, config.PackagePath, config.PackagePath, config.ModuleName, config.ModuleName, config.ModuleName, strings.ToLower(config.ModuleName))
+}`, config.PackagePath, config.PackagePath, strings.ToLower(config.ModuleName), config.ModuleName, config.ModuleName, strings.ToLower(config.ModuleName))
 
 	return os.WriteFile(routerPath, []byte(routerContent), 0644)
 }
@@ -670,8 +670,6 @@ import (
 	"{{.PackagePath}}/internal/core/{{.ModuleName | toLower}}/infrastructure/out/repository/postgres"
 	"{{.PackagePath}}/pkg/database"
 	"{{.PackagePath}}/pkg/dependency"
-
-	"github.com/techforge-lat/linkit"
 )
 
 func provide{{.ModuleName}}Dependencies(container *linkit.DependencyContainer, db *database.Adapter) {
@@ -684,17 +682,7 @@ func provide{{.ModuleName}}Dependencies(container *linkit.DependencyContainer, d
 	handler := httprest.New(useCase)
 	container.Provide(dependency.{{.ModuleName}}Handler, handler)
 }
-
-// Add this function to core.go
-func init{{.ModuleName}}Dependencies(container *linkit.DependencyContainer) error {
-	db, err := linkit.Resolve[*database.Adapter](container, dependency.Database)
-	if err != nil {
-		return errortrace.OnError(err)
-	}
-
-	provide{{.ModuleName}}Dependencies(container, db)
-	return nil
-}`
+`
 }
 
 // Helper function to generate interface files

@@ -11,3 +11,9 @@ const (
 	TenantUseCase    = "tenant.usecase"
 	TenantRepository = "tenant.repository"
 )
+
+const (
+	SupplierHandler    = "supplier.handler"
+	SupplierUseCase    = "supplier.usecase"
+	SupplierRepository = "supplier.repository"
+)

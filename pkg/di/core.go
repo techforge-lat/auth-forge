@@ -15,6 +15,7 @@ func ProvideDependencies(container *linkit.DependencyContainer) error {
 	}
 
 	provideTenantDependencies(container, db)
+	provideSupplierDependencies(container, db)
 
 	return nil
 }

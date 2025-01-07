@@ -3,8 +3,11 @@ module cloud-crm-backend
 go 1.23.2
 
 require (
+	github.com/google/uuid v1.6.0
+	github.com/techforge-lat/dafi/v2 v2.2.0
 	github.com/techforge-lat/errortrace/v2 v2.1.0
 	github.com/techforge-lat/rapi v0.4.0
+	github.com/techforge-lat/sqlcraft v1.1.0
 	github.com/techforge-lat/valid v1.1.1
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.57.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.32.0
@@ -13,13 +16,10 @@ require (
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.23.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
-	github.com/techforge-lat/dafi/v2 v2.2.0 // indirect
-	github.com/techforge-lat/sqlcraft v1.1.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
 	golang.org/x/sync v0.9.0 // indirect

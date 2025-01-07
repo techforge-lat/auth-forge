@@ -1,7 +1,7 @@
 package router
 
 import (
-	"cloud-crm-backend/internal/core/tenant/infrastructure/in/httprest"
+	"cloud-crm-backend/internal/core/supplier/infrastructure/in/httprest"
 	"cloud-crm-backend/pkg/dependency"
 	"cloud-crm-backend/pkg/server"
 
@@ -9,13 +9,13 @@ import (
 	"github.com/techforge-lat/linkit"
 )
 
-func tenantRoutes(server *server.Server) error {
-	handler, err := linkit.Resolve[httprest.Handler](server.Container, dependency.TenantHandler)
+func supplierRoutes(server *server.Server) error {
+	handler, err := linkit.Resolve[httprest.Handler](server.Container, dependency.SupplierHandler)
 	if err != nil {
 		return errortrace.OnError(err)
 	}
 
-	group := server.Echo.Group("v1/tenants")
+	group := server.Echo.Group("v1/suppliers")
 
 	group.POST("", handler.Create)
 	group.PUT("", handler.Update)

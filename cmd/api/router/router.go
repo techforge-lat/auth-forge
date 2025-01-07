@@ -13,5 +13,9 @@ func SetAPIRoutes(server *server.Server) error {
 		return errortrace.OnError(err)
 	}
 
+	if err := supplierRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
 	return nil
 }
