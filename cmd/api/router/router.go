@@ -17,5 +17,49 @@ func SetAPIRoutes(server *server.Server) error {
 		return errortrace.OnError(err)
 	}
 
+	if err := ProductRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := ProductPriceRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := ContractRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := ContractProductRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := InvoiceRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := InvoiceItemRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := InvoicePaymentRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := InvoiceCalculationRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := InvoiceCalculationItemRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := CurrencyRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	if err := PaymentAccountRoutes(server); err != nil {
+		return errortrace.OnError(err)
+	}
+
 	return nil
 }

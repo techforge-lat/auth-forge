@@ -16,6 +16,17 @@ func ProvideDependencies(container *linkit.DependencyContainer) error {
 
 	provideTenantDependencies(container, db)
 	provideSupplierDependencies(container, db)
+	provideProductDependencies(container, db)
+	provideProductPriceDependencies(container, db)
+	provideContractDependencies(container, db)
+	provideContractProductDependencies(container, db)
+	provideInvoiceDependencies(container, db)
+	provideInvoiceItemDependencies(container, db)
+	provideInvoicePaymentDependencies(container, db)
+	provideInvoiceCalculationDependencies(container, db)
+	provideInvoiceCalculationItemDependencies(container, db)
+	provideCurrencyDependencies(container, db)
+	providePaymentAccountDependencies(container, db)
 
 	return nil
 }

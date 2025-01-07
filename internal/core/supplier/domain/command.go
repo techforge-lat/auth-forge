@@ -19,12 +19,12 @@ var (
 
 // SupplierCreateRequest represents the request to create a Supplier
 type SupplierCreateRequest struct {
-	ID            uint        `json:"id"`
+	ID            uuid.UUID   `json:"id"`
 	Name          string      `json:"name"`
 	Description   null.String `json:"description"`
 	Price         float64     `json:"price"`
 	StockQuantity uint        `json:"stock_quantity"`
-	CategoryID    uuid.UUID   `json:"category_i_d"`
+	CategoryID    uuid.UUID   `json:"category_id"`
 	CreatedAt     time.Time   `json:"created_at"`
 }
 
@@ -55,7 +55,7 @@ type SupplierUpdateRequest struct {
 	Description   null.String `json:"description"`
 	Price         null.Float  `json:"price"`
 	StockQuantity null.Int    `json:"stock_quantity"`
-	CategoryID    uuid.UUID   `json:"category_i_d"`
+	CategoryID    uuid.UUID   `json:"category_id"`
 	UpdatedAt     null.Time   `json:"updated_at"`
 }
 
