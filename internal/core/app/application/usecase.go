@@ -1,7 +1,7 @@
 package application
 
 import (
-	"auth-forge/internal/core/tenant/domain"
+	"auth-forge/internal/core/app/domain"
 	"auth-forge/internal/shared/application/code"
 	"auth-forge/internal/shared/domain/ports/out"
 	"context"
@@ -11,14 +11,14 @@ import (
 )
 
 type UseCase struct {
-	repo out.TenantRepository
+	repo out.AppRepository
 }
 
-func NewUseCase(repo out.TenantRepository) UseCase {
+func NewUseCase(repo out.AppRepository) UseCase {
 	return UseCase{repo: repo}
 }
 
-func (uc UseCase) Create(ctx context.Context, entity domain.TenantCreateRequest) error {
+func (uc UseCase) Create(ctx context.Context, entity domain.AppCreateRequest) error {
 	if err := entity.Validate(); err != nil {
 		return errortrace.OnError(err)
 	}
@@ -37,7 +37,7 @@ func (uc UseCase) Create(ctx context.Context, entity domain.TenantCreateRequest)
 	return nil
 }
 
-func (uc UseCase) Update(ctx context.Context, entity domain.TenantUpdateRequest, filters ...dafi.Filter) error {
+func (uc UseCase) Update(ctx context.Context, entity domain.AppUpdateRequest, filters ...dafi.Filter) error {
 	if err := entity.Validate(); err != nil {
 		return errortrace.OnError(err)
 	}
@@ -59,16 +59,16 @@ func (uc UseCase) Delete(ctx context.Context, filters ...dafi.Filter) error {
 	return nil
 }
 
-func (uc UseCase) FindOne(ctx context.Context, criteria dafi.Criteria) (domain.Tenant, error) {
+func (uc UseCase) FindOne(ctx context.Context, criteria dafi.Criteria) (domain.App, error) {
 	result, err := uc.repo.FindOne(ctx, criteria)
 	if err != nil {
-		return domain.Tenant{}, errortrace.OnError(err)
+		return domain.App{}, errortrace.OnError(err)
 	}
 
 	return result, nil
 }
 
-func (uc UseCase) FindAll(ctx context.Context, criteria dafi.Criteria) ([]domain.Tenant, error) {
+func (uc UseCase) FindAll(ctx context.Context, criteria dafi.Criteria) ([]domain.App, error) {
 	result, err := uc.repo.FindAll(ctx, criteria)
 	if err != nil {
 		return nil, errortrace.OnError(err)

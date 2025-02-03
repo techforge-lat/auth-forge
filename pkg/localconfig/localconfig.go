@@ -1,7 +1,7 @@
 package localconfig
 
 import (
-	"cloud-crm-backend/internal/shared/domain"
+	"auth-forge/internal/shared/domain"
 	"fmt"
 	"os"
 	"strconv"

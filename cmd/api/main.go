@@ -1,6 +1,6 @@
 package main
 
-const serviceName = "cloud-crm-backend"
+const serviceName = "auth-forge"
 
 func main() {
 	Run()

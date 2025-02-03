@@ -1,7 +1,7 @@
 package database
 
 import (
-	"cloud-crm-backend/internal/shared/domain"
+	"auth-forge/internal/shared/domain"
 	"context"
 	"fmt"
 

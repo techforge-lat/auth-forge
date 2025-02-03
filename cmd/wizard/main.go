@@ -181,7 +181,7 @@ import (
 	"github.com/techforge-lat/errortrace/v2"
 	"github.com/techforge-lat/linkit"
 
-	"cloud-crm-backend/internal/core/%s/infrastructure/in/httprest"
+	"auth-forge/internal/core/%s/infrastructure/in/httprest"
 )
 
 func %sRoutes(server *server.Server) error {
@@ -190,16 +190,15 @@ func %sRoutes(server *server.Server) error {
 		return errortrace.OnError(err)
 	}
 
-	group := server.Echo.Group("v1/%ss")
+	group := server.Echo.Group("/api/v1/%ss")
 
 	group.POST("", handler.Create)
 	group.PUT("", handler.Update)
-	group.PUT("/:id", handler.UpdateByID)
-	group.DELETE("/:id", handler.DeleteByID)
+	group.PUT("/:code", handler.UpdateByCode)
+	group.DELETE("/:code", handler.DeleteByCode)
 	group.DELETE("", handler.Delete)
-	group.GET("/:id", handler.FindOneByID)
-	group.GET("", handler.FindOne)
-	group.GET("/all", handler.FindAll)
+	group.GET("/:code", handler.FindOneByCode)
+	group.GET("", handler.FindAll)
 
 	return nil
 }`, config.PackagePath, config.PackagePath, strings.ToLower(config.ModuleName), config.ModuleName, config.ModuleName, strings.ToLower(config.ModuleName))
@@ -247,11 +246,11 @@ var (
 
 // {{.ModuleName}}CreateRequest represents the request to create a {{.ModuleName}}
 type {{.ModuleName}}CreateRequest struct {
-    ID uint ` + "`json:\"id\"`" + `
+    ID uuid.UUID ` + "`json:\"id\"`" + `
 {{range .Fields -}}
     {{.Name}} {{if .IsNullable}}{{getNullType .Type .IsNullable true}}{{else}}{{.Type}}{{end}} ` + "`json:\"{{.Name | toSnakeCase}}\"`" + `
 {{end -}}
-    CreatedAt time.Time ` + "`json:\"created_at\"`" + `
+    CreatedAt null.Time ` + "`json:\"created_at\"`" + `
 }
 
 // Validate validates the fields of {{.ModuleName}}CreateRequest
@@ -361,7 +360,7 @@ func (uc UseCase) Update(ctx context.Context, entity domain.{{.ModuleName}}Updat
 		return errortrace.OnError(err)
 	}
 
-	err := uc.repo.Update(ctx, entity)
+	err := uc.repo.Update(ctx, entity, filters...)
 	if err != nil {
 		return errortrace.OnError(err)
 	}
@@ -448,6 +447,20 @@ func (h Handler) UpdateByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, rapi.Updated())
 }
 
+func (h Handler) UpdateByCode(c echo.Context) error {
+	entity := domain.{{.ModuleName}}UpdateRequest{}
+
+	if err := c.Bind(&entity); err != nil {
+		return errortrace.OnError(err).WithCode(errtype.UnprocessableEntity)
+	}
+
+	if err := h.useCase.Update(c.Request().Context(), entity, dafi.FilterBy("code", dafi.Equal, c.Param("code"))...); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	return c.JSON(http.StatusOK, rapi.Updated())
+}
+
 func (h Handler) Update(c echo.Context) error {
 	entity := domain.{{.ModuleName}}UpdateRequest{}
 
@@ -458,6 +471,10 @@ func (h Handler) Update(c echo.Context) error {
 	criteria, err := dafi.NewQueryParser().Parse(c.QueryParams())
 	if err != nil {
 		return errortrace.OnError(err)
+	}
+
+	if len(criteria.Filters) == 0 {
+		return errortrace.OnError(fmt.Errorf("invalid update request, missing filters")).WithCode(errtype.BadRequest).WithTitle("Error de validación").WithMessage("El filtro es requerido")
 	}
 
 	if err := h.useCase.Update(c.Request().Context(), entity, criteria.Filters...); err != nil {
@@ -475,10 +492,22 @@ func (h Handler) DeleteByID(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
+func (h Handler) DeleteByCode(c echo.Context) error {
+	if err := h.useCase.Delete(c.Request().Context(), dafi.FilterBy("code", dafi.Equal, c.Param("code"))...); err != nil {
+		return errortrace.OnError(err)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
+
 func (h Handler) Delete(c echo.Context) error {
 	criteria, err := dafi.NewQueryParser().Parse(c.QueryParams())
 	if err != nil {
 		return errortrace.OnError(err)
+	}
+
+	if len(criteria.Filters) == 0 {
+		return errortrace.OnError(fmt.Errorf("invalid update request, missing filters")).WithCode(errtype.BadRequest).WithTitle("Error de validación").WithMessage("El filtro es requerido")
 	}
 
 	if err := h.useCase.Delete(c.Request().Context(), criteria.Filters...); err != nil {
@@ -487,6 +516,7 @@ func (h Handler) Delete(c echo.Context) error {
 
 	return c.NoContent(http.StatusNoContent)
 }
+
 
 func (h Handler) FindOneByID(c echo.Context) error {
 	result, err := h.useCase.FindOne(c.Request().Context(), dafi.Where("id", dafi.Equal, c.Param("id")))
@@ -497,13 +527,8 @@ func (h Handler) FindOneByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, rapi.Ok(result))
 }
 
-func (h Handler) FindOne(c echo.Context) error {
-	criteria, err := dafi.NewQueryParser().Parse(c.QueryParams())
-	if err != nil {
-		return errortrace.OnError(err)
-	}
-
-	result, err := h.useCase.FindOne(c.Request().Context(), criteria)
+func (h Handler) FindOneByCode(c echo.Context) error {
+	result, err := h.useCase.FindOne(c.Request().Context(), dafi.Where("code", dafi.Equal, c.Param("code")))
 	if err != nil {
 		return errortrace.OnError(err)
 	}
@@ -558,7 +583,11 @@ func (r Repository) WithTx(tx out.Transaction) out.{{.ModuleName}}Repository {
 }
 
 func (r Repository) Create(ctx context.Context, entity domain.{{.ModuleName}}CreateRequest) error {
-	result, err := insertQuery.WithValues({{range $i, $f := .Fields}}{{if $i}}, {{end}}entity.{{$f.Name}}{{end}}, entity.CreatedAt).ToSQL()
+	if !entity.CreatedAt.Valid {
+		entity.CreatedAt.SetValid(time.Now())
+	}
+
+	result, err := insertQuery.WithValues(entity.ID, {{range $i, $f := .Fields}}{{if $i}}, {{end}}entity.{{$f.Name}}{{end}}, entity.CreatedAt).ToSQL()
 	if err != nil {
 		return errortrace.OnError(err)
 	}
@@ -670,6 +699,8 @@ import (
 	"{{.PackagePath}}/internal/core/{{.ModuleName | toLower}}/infrastructure/out/repository/postgres"
 	"{{.PackagePath}}/pkg/database"
 	"{{.PackagePath}}/pkg/dependency"
+
+	"github.com/techforge-lat/linkit"
 )
 
 func provide{{.ModuleName}}Dependencies(container *linkit.DependencyContainer, db *database.Adapter) {

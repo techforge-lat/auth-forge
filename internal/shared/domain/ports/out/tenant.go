@@ -1,6 +1,6 @@
 package out
 
-import "cloud-crm-backend/internal/core/tenant/domain"
+import "auth-forge/internal/core/tenant/domain"
 
 type TenantRepository interface {
 	RepositoryTx[TenantRepository]

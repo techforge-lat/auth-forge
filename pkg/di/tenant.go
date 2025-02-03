@@ -1,11 +1,11 @@
 package di
 
 import (
-	"cloud-crm-backend/internal/core/tenant/application"
-	"cloud-crm-backend/internal/core/tenant/infrastructure/in/httprest"
-	"cloud-crm-backend/internal/core/tenant/infrastructure/out/repository/postgres"
-	"cloud-crm-backend/pkg/database"
-	"cloud-crm-backend/pkg/dependency"
+	"auth-forge/internal/core/tenant/application"
+	"auth-forge/internal/core/tenant/infrastructure/in/httprest"
+	"auth-forge/internal/core/tenant/infrastructure/out/repository/postgres"
+	"auth-forge/pkg/database"
+	"auth-forge/pkg/dependency"
 
 	"github.com/techforge-lat/linkit"
 )

@@ -42,6 +42,8 @@ github.com/labstack/gommon v0.4.2 h1:F8qTUNXgG1+6WQmqoUWnz8WiEU60mXVVw0P4ht1WRA0
 github.com/labstack/gommon v0.4.2/go.mod h1:QlUFxVM+SNXhDL/Z7YhocGIBYOiwB0mXm1+1bAPHPyU=
 github.com/lib/pq v1.10.0 h1:Zx5DJFEYQXio93kgXnQ09fXNiUKsqv4OUEu2UtGcB1E=
 github.com/lib/pq v1.10.0/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
+github.com/matoous/go-nanoid v1.5.1 h1:aCjdvTyO9LLnTIi0fgdXhOPPvOHjpXN6Ik9DaNjIct4=
+github.com/matoous/go-nanoid v1.5.1/go.mod h1:zyD2a71IubI24efhpvkJz+ZwfwagzgSO6UNiFsZKN7U=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
 github.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=
 github.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=
@@ -70,10 +72,18 @@ github.com/techforge-lat/linkit v1.0.0 h1:zfjdkDVwCZdz9CT/45V+IJRb06TsyOSgmfb/mj
 github.com/techforge-lat/linkit v1.0.0/go.mod h1:AxbbJboLRVjqaRKEcbXJxzm3T+97S+dDrSDotx6unCM=
 github.com/techforge-lat/rapi v0.4.0 h1:rOi7MIpxnrSZK/xiZB7GVhLeiRYy7kgUNzBdyoqEdMY=
 github.com/techforge-lat/rapi v0.4.0/go.mod h1:4KmKbPhxiBm+H/Pr+CV/0g6HBcZQnwqvkQkQDLrKq6s=
+github.com/techforge-lat/rapi v0.5.0 h1:bcMtA+yGPEcHxSDWWuUWvmxI2yoBzn/oT5x+nTgkq8s=
+github.com/techforge-lat/rapi v0.5.0/go.mod h1:4KmKbPhxiBm+H/Pr+CV/0g6HBcZQnwqvkQkQDLrKq6s=
 github.com/techforge-lat/sqlcraft v1.1.0 h1:UNti1at44jJpw56seK/pA/zxtfaNx2pqeniuJ7yrq9c=
 github.com/techforge-lat/sqlcraft v1.1.0/go.mod h1:1zkGsPIwcJFt1fXJHk+oCIbpW3B3BrFm+T33zfEGoTE=
+github.com/techforge-lat/sqlcraft v1.1.1 h1:JWeqn4u5ufHdmNHyqbt5bnCyj/HV/51TTrtf8D0ViAw=
+github.com/techforge-lat/sqlcraft v1.1.1/go.mod h1:1zkGsPIwcJFt1fXJHk+oCIbpW3B3BrFm+T33zfEGoTE=
 github.com/techforge-lat/valid v1.1.1 h1:F7P/8PmmirokeDLIC6k5QIN5Kcxl521W6JUHkLorRu8=
 github.com/techforge-lat/valid v1.1.1/go.mod h1:/q1PM2ObNk/97QsiPFuyishbKCkjp6DMnpW4LqA/7dk=
+github.com/techforge-lat/valid v1.2.0 h1:WKr6rdsDg4u1PswMZJynFNpAByPb8cIYCwPD0Z6+1Xg=
+github.com/techforge-lat/valid v1.2.0/go.mod h1:kkgFiH4X53szVhyMpdn/9s9OfsqiP0THkLQwaFjs3nA=
+github.com/techforge-lat/valid v1.2.1 h1:McMMVOpX7cakutL7W61JTMRf12pUkZ9d00Vuls0VTiQ=
+github.com/techforge-lat/valid v1.2.1/go.mod h1:kkgFiH4X53szVhyMpdn/9s9OfsqiP0THkLQwaFjs3nA=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasttemplate v1.2.2 h1:lxLXG0uE3Qnshl9QyaK6XJxMXlQZELvChBOCmQD0Loo=

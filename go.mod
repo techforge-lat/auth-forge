@@ -1,4 +1,4 @@
-module cloud-crm-backend
+module auth-forge
 
 go 1.23.2
 
@@ -6,9 +6,9 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/techforge-lat/dafi/v2 v2.2.0
 	github.com/techforge-lat/errortrace/v2 v2.1.0
-	github.com/techforge-lat/rapi v0.4.0
-	github.com/techforge-lat/sqlcraft v1.1.0
-	github.com/techforge-lat/valid v1.1.1
+	github.com/techforge-lat/rapi v0.5.0
+	github.com/techforge-lat/sqlcraft v1.1.1
+	github.com/techforge-lat/valid v1.2.1
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.57.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.32.0
 	go.opentelemetry.io/otel/sdk v1.32.0
@@ -39,6 +39,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/labstack/gommon v0.4.2 // indirect
+	github.com/matoous/go-nanoid v1.5.1
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/rs/zerolog v1.33.0

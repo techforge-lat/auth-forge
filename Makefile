@@ -5,21 +5,21 @@ ccyellow=$(shell printf "\033[0;33m")
 ccend=$(shell printf "\033[0m")
 
 # Environment variables for project
--include $(PWD)/cmd/auth/.env
+-include $(PWD)/cmd/api/.env
 
 # Export all variable to sub-make
 export
 
 migration-create:
-	@./bin/migrate create -ext sql -dir ./database/migrations $(name)
+	migrate create -ext sql -dir ./database/migrations $(name)
 
 DB_URL=$(DB_ENGINE)://$(DB_USER):$(DB_PASSWORD)@$(DB_SERVER):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)
 migration-up:
 	@echo $(DB_URL)
-	@./bin/migrate -source file://database/migrations -database $(DB_URL) up $(count)
+	migrate -source file://database/migrations -database $(DB_URL) up $(count)
 
 migration-down:
-	@./bin/migrate -source file://database/migrations -database $(DB_URL) down $(count)
+	migrate -source file://database/migrations -database $(DB_URL) down $(count)
 
 
 # SILENT MODE (avoid echoes)
@@ -66,7 +66,7 @@ linter:
 	@printf "$(ccgreen)Linter finished!$(ccend)\n"
 
 install-linter:
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH)/bin latest
+	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(GOPATH)/bin latest
 
 install-goimports:
 	go install golang.org/x/tools/cmd/goimports@latest

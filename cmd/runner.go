@@ -1,12 +1,12 @@
 package cmd
 
 import (
-	"cloud-crm-backend/internal/shared/domain"
-	"cloud-crm-backend/pkg/database"
-	"cloud-crm-backend/pkg/dependency"
-	"cloud-crm-backend/pkg/localconfig"
-	"cloud-crm-backend/pkg/logger"
-	"cloud-crm-backend/pkg/server"
+	"auth-forge/internal/shared/domain"
+	"auth-forge/pkg/database"
+	"auth-forge/pkg/dependency"
+	"auth-forge/pkg/localconfig"
+	"auth-forge/pkg/logger"
+	"auth-forge/pkg/server"
 
 	"github.com/techforge-lat/errortrace/v2"
 	"github.com/techforge-lat/linkit"

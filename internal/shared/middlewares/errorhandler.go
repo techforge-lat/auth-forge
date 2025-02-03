@@ -1,8 +1,9 @@
 package middlewares
 
 import (
-	"cloud-crm-backend/internal/shared/domain/ports/out"
+	"auth-forge/internal/shared/domain/ports/out"
 	"errors"
+	"net/http"
 	"path/filepath"
 	"strconv"
 
@@ -34,7 +35,7 @@ func HTTPErrorHandler(logger out.Logger) echo.HTTPErrorHandler {
 				response.DebugError = err.Error()
 			}
 
-			err = c.JSON(c.Response().Status, response) //nolint:staticcheck,wastedassign,ineffassign
+			err = c.JSON(http.StatusInternalServerError, response) //nolint:staticcheck,wastedassign,ineffassign
 
 			return
 		}
@@ -66,7 +67,7 @@ func HTTPErrorHandler(logger out.Logger) echo.HTTPErrorHandler {
 		attrs = append(attrs, "user_id", userID)
 		attrs = append(attrs, "status_http", httpStatusCode)
 
-		var validationErrors *valid.ValidationErrors
+		var validationErrors valid.ValidationErrors
 		if errors.As(err, &validationErrors) {
 			attrs = append(attrs, validationErrors.LogFields()...)
 		}
@@ -102,11 +103,11 @@ func ToResponse(b *errortrace.Error) rapi.Response {
 		b.Message = rapi.DetailByStatusCode[b.Code]
 	}
 
-	response := rapi.Response{
-		Title:      b.Title,
-		Detail:     b.Message,
-		StatusCode: b.Code,
-	}
+	response := rapi.New()
+
+	response.Title = b.Title
+	response.Detail = b.Message
+	response.StatusCode = b.Code
 
 	if errors.Is(b.Cause, pgx.ErrNoRows) {
 		notFoundResponse := *rapi.New()
@@ -118,12 +119,15 @@ func ToResponse(b *errortrace.Error) rapi.Response {
 		return notFoundResponse
 	}
 
-	var validationErrors *valid.ValidationErrors
+	var validationErrors valid.ValidationErrors
 	if errors.As(b.Cause, &validationErrors) {
-		// response.ValidationErros = *validationErrors
+		response.Data = validationErrors
+		response.Title = "Error de validación"
+		response.Detail = validationErrors.Error()
+		response.StatusCode = string(rapi.UnprocessableEntity)
 	}
 
-	return response
+	return *response
 }
 
 func LogFields(b *errortrace.Error) []any {

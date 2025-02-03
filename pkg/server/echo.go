@@ -1,12 +1,12 @@
 package server
 
 import (
-	"cloud-crm-backend/internal/shared/domain"
-	"cloud-crm-backend/internal/shared/domain/ports/out"
-	"cloud-crm-backend/internal/shared/middlewares"
-	"cloud-crm-backend/pkg/database"
-	"cloud-crm-backend/pkg/dependency"
-	"cloud-crm-backend/pkg/telemetry"
+	"auth-forge/internal/shared/domain"
+	"auth-forge/internal/shared/domain/ports/out"
+	"auth-forge/internal/shared/middlewares"
+	"auth-forge/pkg/database"
+	"auth-forge/pkg/dependency"
+	"auth-forge/pkg/telemetry"
 	"context"
 	"errors"
 	"fmt"
@@ -77,12 +77,12 @@ func New(container *linkit.DependencyContainer, serviceName string) (*Server, er
 func (s Server) Start() error {
 	// Configures the timezone for the hole application
 
-	// loc, err := time.LoadLocation(s.Config.Timezone)
-	// if err != nil {
-	// 	return errortrace.OnError(err)
-	// }
-	//
-	// time.Local = loc
+	loc, err := time.LoadLocation(s.Config.Timezone)
+	if err != nil {
+		return errortrace.OnError(err)
+	}
+
+	time.Local = loc
 
 	// Handle SIGINT (CTRL+C) gracefully
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"cloud-crm-backend/cmd"
-	"cloud-crm-backend/cmd/api/router"
-	"cloud-crm-backend/internal/shared/domain"
-	"cloud-crm-backend/pkg/di"
-	"cloud-crm-backend/pkg/logger"
+	"auth-forge/cmd"
+	"auth-forge/cmd/api/router"
+	"auth-forge/internal/shared/domain"
+	"auth-forge/pkg/di"
+	"auth-forge/pkg/logger"
 	"context"
 	"os"
 )
