@@ -9,20 +9,19 @@ RUN apk update && \
 	cp /usr/share/zoneinfo/$TZ /etc/localtime && \
 	echo $TZ > /etc/timezone
 
-WORKDIR /crm
-ADD *.mod *.sum ./
+WORKDIR /app
+COPY *.mod *.sum ./
 RUN go mod download
 
-FROM deps as dev
-ADD . .
+FROM deps AS dev
+COPY . .
 EXPOSE 8080
-RUN go build -ldflags "-w -X main.docker=true" \
-	-o api cmd/api
-CMD ["/crm/api"]
+RUN go build -o ./api ./cmd/api
+CMD ["/app/api"]
 
-FROM scratch as prod
+FROM scratch AS prod
 
 WORKDIR /
 EXPOSE 8080
-COPY --from=dev /crm/api /
+COPY --from=dev /app/api /
 CMD ["/api"]
