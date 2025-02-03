@@ -75,15 +75,6 @@ func New(container *linkit.DependencyContainer, serviceName string) (*Server, er
 }
 
 func (s Server) Start() error {
-	// Configures the timezone for the hole application
-
-	loc, err := time.LoadLocation(s.Config.Timezone)
-	if err != nil {
-		return errortrace.OnError(err)
-	}
-
-	time.Local = loc
-
 	// Handle SIGINT (CTRL+C) gracefully
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
