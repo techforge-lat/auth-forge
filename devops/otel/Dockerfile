@@ -1,21 +1,15 @@
 FROM otel/opentelemetry-collector:0.97.0
 
-# Use Railway's built-in build arguments
-ARG RAILWAY_TEMPO_URL
-ENV TEMPO_HOST=$RAILWAY_TEMPO_URL
+# Definir una variable de entorno a partir de un argumento
+ARG RAILWAY_TEMPO_HOST
+ENV TEMPO_HOST=$RAILWAY_TEMPO_HOST
 
-# Install envsubst for runtime environment substitution
-USER root
-RUN apt-get update && apt-get install -y gettext-base
-USER otel
+# Instalar gettext para usar envsubst
+RUN apk add --no-cache gettext
 
-# Copy config file with placeholders
-COPY otel-collector-config.yml /etc/otel-collector-config.yaml
+COPY otel-collector-config.yml /etc/otel-collector-config.tpl
 
-# Entrypoint script for runtime substitution
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Reemplazar la variable de entorno en tiempo de ejecución y ejecutar el servicio
+CMD envsubst < /etc/otel-collector-config.tpl > /etc/otel-collector-config.yaml && \
+	/otelcol --config=/etc/otel-collector-config.yaml
 
-EXPOSE 1888 8888 8889 13133 4317 4318 55679
-
-ENTRYPOINT ["/entrypoint.sh"]
