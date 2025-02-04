@@ -1,15 +1,16 @@
-FROM otel/opentelemetry-collector:0.97.0
-
-# Definir una variable de entorno a partir de un argumento
-ARG RAILWAY_TEMPO_HOST
-ENV TEMPO_HOST=$RAILWAY_TEMPO_HOST
-
-# Instalar gettext para usar envsubst
+# Etapa 1: Usar una imagen con gettext para procesar el archivo
+FROM alpine:latest AS builder
 RUN apk add --no-cache gettext
+WORKDIR /app
+COPY otel-collector-config.yml /app/otel-collector-config.yaml
+CMD envsubst < /app/otel-collector-config.tpl > /app/otel-collector-config.yaml
 
-COPY otel-collector-config.yml /etc/otel-collector-config.tpl
+# Etapa 2: Imagen final con OpenTelemetry
+FROM otel/opentelemetry-collector:0.97.0
+COPY --from=builder /app/otel-collector-config.yaml /etc/otel-collector-config.yaml
 
-# Reemplazar la variable de entorno en tiempo de ejecución y ejecutar el servicio
-CMD envsubst < /etc/otel-collector-config.tpl > /etc/otel-collector-config.yaml && \
-	/otelcol --config=/etc/otel-collector-config.yaml
+ARG RAILWAY_SERVICE_NAME
+ENV TEMPO_HOST=$RAILWAY_SERVICE_NAME
+
+CMD ["/otelcol", "--config=/etc/otel-collector-config.yaml"]
 
