@@ -8,7 +8,7 @@ exporters:
     logging:
         loglevel: info
     otlp:
-        endpoint: ${TEMPO_HOST}:4317
+        endpoint: tempo.railway.internal:4317
         tls:
             insecure: true
 
