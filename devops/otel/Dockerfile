@@ -12,5 +12,5 @@ COPY --from=builder /app/otel-collector-config.yaml /etc/otel-collector-config.y
 ARG RAILWAY_SERVICE_NAME
 ENV TEMPO_HOST=$RAILWAY_SERVICE_NAME
 
-CMD ["/otelcol", "--config=/etc/otel-collector-config.yaml"]
+CMD [--config=/etc/otel-collector-config.yaml"]
 
