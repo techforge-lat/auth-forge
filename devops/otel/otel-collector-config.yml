@@ -8,7 +8,7 @@ exporters:
     logging:
         loglevel: info
     otlp:
-        endpoint: tempo:4317
+        endpoint: ${TEMPO_HOST}:4317
         tls:
             insecure: true
 
