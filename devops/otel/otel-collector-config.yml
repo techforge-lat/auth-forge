@@ -5,15 +5,35 @@ receivers:
             http:
 
 exporters:
+    debug:
+        verbosity: detailed
+
     logging:
-        loglevel: info
+
     otlp:
-        endpoint: tempo-production-8cc9.up.railway.app:4317
+        endpoint: tempo.railway.internal:4317
         tls:
             insecure: true
 
+processors:
+    batch:
+
+extensions:
+    health_check:
+    pprof:
+        endpoint: :1888
+    zpages:
+        endpoint: :55679
+
 service:
+    extensions: [pprof, zpages, health_check]
     pipelines:
         traces:
             receivers: [otlp]
-            exporters: [logging, otlp]
+            processors: [batch]
+            exporters: [logging, otlp, debug]
+        metrics:
+            receivers: [otlp]
+            processors: [batch]
+            exporters: [logging, debug]
+
